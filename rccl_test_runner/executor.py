@@ -21,11 +21,12 @@ def build_command(executable: Path, config: Configuration, output_path: Path) ->
         step_value = config.step_detail.value
 
     cmd_parts = [
-        f"./{str(executable)}",
+        "mpirun -np 8 --mca pml ucx --mca btl ^openib -x NCCL_DEBUG=VERSION",
+        f"{str(executable)}",
         "-d", ",".join(config.datatype),
         "-b", format_size(config.start_size),
         "-e", format_size(config.end_size),
-        f"{step_flag}", f"{str(step_value) if step_value else ""}",
+        f"{step_flag}", f"{str(step_value) if step_value else ''}",
         "-g", str(config.gpus_per_thread),
         "-n", str(config.iterations),
         "-o", ",".join(config.operation),
@@ -49,4 +50,6 @@ def run_executable(
     cmd = build_command(executable, config, output_path)
     env = prepare_env(config.ENV_VARS)
     print(cmd)
-    subprocess.run(cmd, env=env, stdout=subprocess.STDOUT, stderr=subprocess.STDOUT, shell=True, check=True)
+    env["OMPI_ALLOW_RUN_AS_ROOT"] = "1"
+    env["OMPI_ALLOW_RUN_AS_ROOT_CONFIRM"] = "1"
+    subprocess.run(cmd, env=env, shell=True, check=True)
