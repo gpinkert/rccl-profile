@@ -14,7 +14,7 @@ from stats import summarize_results, save_summary_csv
 def run_tests(config: str, executable_dir: Path) -> None:
 
     config_path = get_config_path(config)
-
+    print(f"Config path {config_path}")
     raw_config = load_yaml_config(config_path)
 
     output_root = Path("results") / config_path.stem
@@ -27,17 +27,17 @@ def run_tests(config: str, executable_dir: Path) -> None:
         test_dir.mkdir(parents=True, exist_ok=True)
 
         shutil.copy(config_path, test_dir / "config.yaml")
-
+        print(test_name)
+        print(f"Raw config {raw_config}")
         if test_cfg.collectives[0] == "all":
-            for collective in VALID_COLLECTIVES:
-                run_executable(executable_dir / (str(collective) + str("_perf")), test_cfg, test_dir)
-        else:
-            for collective in test_cfg.collectives:
-                run_executable(executable_dir / (str(collective) + str("_perf")), test_cfg, test_dir)
+            test_cfg.collectives = VALID_COLLECTIVES
+        
+        for collective in test_cfg.collectives:
+            run_executable(executable_dir / (str(collective) + str("_perf")), test_cfg, test_dir)
 
         all_results = []
         for exe in test_cfg.collectives:
-            out_file = test_dir / f"{Path(exe).stem}.json"
+            out_file = test_dir / f"{Path(exe + str('_perf')).stem}.json"
             all_results.extend(parse_output_json(out_file))
 
         summary_df = summarize_results(all_results)

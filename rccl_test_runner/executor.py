@@ -6,7 +6,7 @@ from typing import List, Optional
 from configuration import Configuration
 
 def format_size(size: str) -> str:
-    return size if isinstance(size, str) and size.endswith("GB") else str(size)
+    return size if isinstance(size, str) and (size.lower().endswith("gb") or size.lower().endswith("g")) else str(size)
 
 def build_command(executable: Path, config: Configuration, output_path: Path) -> str:
     step_flag: str = ""
@@ -52,4 +52,12 @@ def run_executable(
     print(cmd)
     env["OMPI_ALLOW_RUN_AS_ROOT"] = "1"
     env["OMPI_ALLOW_RUN_AS_ROOT_CONFIRM"] = "1"
-    subprocess.run(cmd, env=env, shell=True, check=True)
+
+    try:
+        result = subprocess.run(cmd, env=env, shell=True)
+        result.check_returncode()  # Raises CalledProcessError if return code != 0
+    except subprocess.CalledProcessError as e:
+        print(f"[WARNING] Command failed: {e.cmd}")
+        print(f"[WARNING] Exit status: {e.returncode}")
+    except Exception as ex:
+        print(f"[ERROR] Unexpected error: {ex}")

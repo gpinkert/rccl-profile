@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Union, Optional
 
 VALID_COLLECTIVES = {
-    "all_gather", "all_reduce", "alltoall", "alltoallv",
+    "all_gather", "all_reduce", "alltoall", "alltoallv", "scatter",
     "broadcast", "gather", "reduce", "reduce_scatter", "sendrecv"
 }
 

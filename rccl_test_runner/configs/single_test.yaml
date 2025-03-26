@@ -1,0 +1,30 @@
+single_test:
+  collectives: [sendrecv]
+  start_size: 1
+  end_size: 1GB
+  iterations: 2
+  operation: [sum]
+  step_details:
+    - type: multiple
+      value: 2
+  datatype: [float]
+  ENV_VARS:
+    - id: NCCL_GDRCOPY_ENABLE
+      value: 0
+    - id: SOME_OTHER_VAR
+      value: off
+single_scatter_test:
+  collectives: [single_scatter_test]
+  start_size: 1
+  end_size: 1GB
+  iterations: 2
+  operation: [mul]
+  step_details:
+    - type: multiple
+      value: 2
+  datatype: [float]
+  ENV_VARS:
+    - id: NCCL_GDRCOPY_ENABLE
+      value: 0
+    - id: SOME_OTHER_VAR
+      value: off
