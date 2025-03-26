@@ -17,8 +17,7 @@ def load_yaml_config(config_path: Path) -> Dict[str, Any]:
 
     with config_path.open("r") as f:
         config = yaml.safe_load(f)
-    print(config['all_test'])
-
+    
     if not isinstance(config, dict):
         raise ValueError("Top-level YAML content must be a dictionary of test entries.")
 
