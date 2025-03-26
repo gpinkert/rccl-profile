@@ -1,0 +1,15 @@
+all_test:
+  collectives: [all]
+  start_size: 1
+  end_size: 1GB
+  iterations: 2
+  operation: [all]
+  step_details:
+    - type: multiple
+      value: 2
+  datatype: [all]
+  ENV_VARS:
+    - id: NCCL_GDRCOPY_ENABLE
+      value: 0
+    - id: SOME_OTHER_VAR
+      value: off
