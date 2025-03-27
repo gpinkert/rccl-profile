@@ -1,4 +1,4 @@
-
+import yaml
 import shutil
 import subprocess
 from pathlib import Path
@@ -25,8 +25,12 @@ def run_tests(config: str, executable_dir: Path) -> Path:
         test_dir = output_root / test_name / datetime.now().strftime("%Y%m%d_%H%M%S")
         test_dir.mkdir(parents=True, exist_ok=True)
 
-        shutil.copy(config_path, test_dir / "config.yaml")
-        print(test_name)
+        
+        partial_conf = { test_name: test_dict }
+
+        with open(test_dir / "config.yaml", "w") as f:
+            yaml.safe_dump(partial_conf, f)
+            print(test_name)
         print(f"Raw config {raw_config}")
         if test_cfg.collectives[0] == "all":
             test_cfg.collectives = VALID_COLLECTIVES
@@ -74,7 +78,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    results_folder = run_tests(args.config, args.executables)
+    results_folder = run_tests(args.config, args.executable_dir)
 
     if args.show_dashboard:
         launch_dashboard(results_folder)

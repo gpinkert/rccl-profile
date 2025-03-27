@@ -1,0 +1,12 @@
+{"name":"Reduce", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"sum", "inPlace":0, "time":214.981188, "algBw":0.004763, "busBw":0.004763, "wrong":"0"}
+{"name":"Reduce", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"sum", "inPlace":1, "time":204.548438, "algBw":0.005006, "busBw":0.005006, "wrong":"0"}
+{"name":"Reduce", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"prod", "inPlace":0, "time":202.943563, "algBw":0.005046, "busBw":0.005046, "wrong":"0"}
+{"name":"Reduce", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"prod", "inPlace":1, "time":203.361063, "algBw":0.005035, "busBw":0.005035, "wrong":"0"}
+{"name":"Reduce", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"max", "inPlace":0, "time":200.125625, "algBw":0.005117, "busBw":0.005117, "wrong":"0"}
+{"name":"Reduce", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"max", "inPlace":1, "time":200.138125, "algBw":0.005116, "busBw":0.005116, "wrong":"0"}
+{"name":"Reduce", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"min", "inPlace":0, "time":200.881688, "algBw":0.005098, "busBw":0.005098, "wrong":"0"}
+{"name":"Reduce", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"min", "inPlace":1, "time":202.603062, "algBw":0.005054, "busBw":0.005054, "wrong":"0"}
+{"name":"Reduce", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"avg", "inPlace":0, "time":202.932375, "algBw":0.005046, "busBw":0.005046, "wrong":"0"}
+{"name":"Reduce", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"avg", "inPlace":1, "time":201.103813, "algBw":0.005092, "busBw":0.005092, "wrong":"0"}
+{"name":"Reduce", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"mulsum", "inPlace":0, "time":204.485375, "algBw":0.005008, "busBw":0.005008, "wrong":"0"}
+{"name":"Reduce", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"mulsum", "inPlace":1, "time":201.409938, "algBw":0.005084, "busBw":0.005084, "wrong":"0"}

@@ -1,0 +1,12 @@
+{"name":"SendRecv", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"sum", "inPlace":0, "time":199.227313, "algBw":0.005140, "busBw":0.005140, "wrong":"0"}
+{"name":"SendRecv", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"sum", "inPlace":1, "time":196.455063, "algBw":0.005212, "busBw":0.005212, "wrong":"N/A"}
+{"name":"SendRecv", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"prod", "inPlace":0, "time":197.126063, "algBw":0.005195, "busBw":0.005195, "wrong":"0"}
+{"name":"SendRecv", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"prod", "inPlace":1, "time":198.573250, "algBw":0.005157, "busBw":0.005157, "wrong":"N/A"}
+{"name":"SendRecv", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"max", "inPlace":0, "time":198.164625, "algBw":0.005167, "busBw":0.005167, "wrong":"0"}
+{"name":"SendRecv", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"max", "inPlace":1, "time":196.471375, "algBw":0.005212, "busBw":0.005212, "wrong":"N/A"}
+{"name":"SendRecv", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"min", "inPlace":0, "time":197.099250, "algBw":0.005195, "busBw":0.005195, "wrong":"0"}
+{"name":"SendRecv", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"min", "inPlace":1, "time":196.624000, "algBw":0.005208, "busBw":0.005208, "wrong":"N/A"}
+{"name":"SendRecv", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"avg", "inPlace":0, "time":198.549375, "algBw":0.005157, "busBw":0.005157, "wrong":"0"}
+{"name":"SendRecv", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"avg", "inPlace":1, "time":196.672375, "algBw":0.005207, "busBw":0.005207, "wrong":"N/A"}
+{"name":"SendRecv", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"mulsum", "inPlace":0, "time":196.339813, "algBw":0.005215, "busBw":0.005215, "wrong":"0"}
+{"name":"SendRecv", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"mulsum", "inPlace":1, "time":197.434000, "algBw":0.005187, "busBw":0.005187, "wrong":"N/A"}

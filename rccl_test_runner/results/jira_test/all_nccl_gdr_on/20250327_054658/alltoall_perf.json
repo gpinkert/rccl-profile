@@ -1,0 +1,2 @@
+{"name":"AlltoAll", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"none", "inPlace":0, "time":27.428750, "algBw":0.037333, "busBw":0.032666, "wrong":"0"}
+{"name":"AlltoAll", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"none", "inPlace":1, "time":217.786625, "algBw":0.004702, "busBw":0.004114, "wrong":"N/A"}
