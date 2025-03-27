@@ -1,2 +1,0 @@
-{"name":"Gather", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"none", "inPlace":0, "time":199.229250, "algBw":0.005140, "busBw":0.004497, "wrong":"0"}
-{"name":"Gather", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"none", "inPlace":1, "time":196.538375, "algBw":0.005210, "busBw":0.004559, "wrong":"0"}

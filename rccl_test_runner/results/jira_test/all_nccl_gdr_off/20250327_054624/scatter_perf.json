@@ -1,2 +1,0 @@
-{"name":"Scatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"none", "inPlace":0, "time":210.744188, "algBw":0.004859, "busBw":0.004252, "wrong":"0"}
-{"name":"Scatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"none", "inPlace":1, "time":203.303500, "algBw":0.005037, "busBw":0.004407, "wrong":"0"}

@@ -1,2 +1,0 @@
-{"name":"Broadcast", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"none", "inPlace":0, "time":202.251250, "algBw":0.005063, "busBw":0.005063, "wrong":"0"}
-{"name":"Broadcast", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":1024, "type":"float", "redop":"none", "inPlace":1, "time":199.631125, "algBw":0.005129, "busBw":0.005129, "wrong":"0"}
