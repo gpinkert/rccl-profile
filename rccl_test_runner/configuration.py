@@ -2,13 +2,13 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Union, Optional
 
 VALID_COLLECTIVES = {
-    "all", "all_gather", "all_reduce", "alltoall", "alltoallv", "scatter",
+    "all_gather", "all_reduce", "alltoall", "alltoallv", "scatter",
     "broadcast", "gather", "reduce", "reduce_scatter", "sendrecv"
 }
 
 VALID_OPS = {"sum", "prod", "min", "max", "avg", "mulsum", "all"}
 VALID_DATATYPES = {"int8", "uint8", "int32", "uint32", "int64",
-                   "uint64", "half", "float", "double", "bloat16",
+                   "uint64", "half", "float", "double", "bfloat16",
                    "fp8_e4m3", "fp8_e5m2", "all"}
 
 VALID_STEP_TYPES = {"multiple", "increment"}
