@@ -1,0 +1,12 @@
+{"name":"ReduceScatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"sum", "inPlace":0, "time":219.820250, "algBw":0.004658, "busBw":0.004076, "wrong":"0"}
+{"name":"ReduceScatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"sum", "inPlace":1, "time":205.472375, "algBw":0.004984, "busBw":0.004361, "wrong":"0"}
+{"name":"ReduceScatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"prod", "inPlace":0, "time":208.126938, "algBw":0.004920, "busBw":0.004305, "wrong":"0"}
+{"name":"ReduceScatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"prod", "inPlace":1, "time":208.266563, "algBw":0.004917, "busBw":0.004302, "wrong":"0"}
+{"name":"ReduceScatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"max", "inPlace":0, "time":205.672813, "algBw":0.004979, "busBw":0.004356, "wrong":"0"}
+{"name":"ReduceScatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"max", "inPlace":1, "time":205.414688, "algBw":0.004985, "busBw":0.004362, "wrong":"0"}
+{"name":"ReduceScatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"min", "inPlace":0, "time":206.435063, "algBw":0.004960, "busBw":0.004340, "wrong":"0"}
+{"name":"ReduceScatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"min", "inPlace":1, "time":208.038063, "algBw":0.004922, "busBw":0.004307, "wrong":"0"}
+{"name":"ReduceScatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"avg", "inPlace":0, "time":206.303562, "algBw":0.004964, "busBw":0.004343, "wrong":"0"}
+{"name":"ReduceScatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"avg", "inPlace":1, "time":205.081875, "algBw":0.004993, "busBw":0.004369, "wrong":"0"}
+{"name":"ReduceScatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"mulsum", "inPlace":0, "time":206.763750, "algBw":0.004953, "busBw":0.004333, "wrong":"0"}
+{"name":"ReduceScatter", "nodes":1, "ranks":8, "ranksPerNode":8, "gpusPerRank":1, "size":128, "type":"float", "redop":"mulsum", "inPlace":1, "time":206.908375, "algBw":0.004949, "busBw":0.004330, "wrong":"0"}
