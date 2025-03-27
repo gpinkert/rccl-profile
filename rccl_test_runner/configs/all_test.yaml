@@ -7,7 +7,7 @@ all_test:
   step_details:
     - type: multiple
       value: 2
-  datatype: [all]
+  datatypes: [all]
   ENV_VARS:
     - id: NCCL_GDRCOPY_ENABLE
       value: 0
