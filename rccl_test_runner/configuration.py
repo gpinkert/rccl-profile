@@ -9,7 +9,7 @@ VALID_COLLECTIVES = {
 VALID_OPS = {"sum", "prod", "min", "max", "avg", "mulsum", "all"}
 VALID_DATATYPES = {"int8", "uint8", "int32", "uint32", "int64",
                    "uint64", "half", "float", "double", "bloat16",
-                   "fp8_e4m3", "fp8_e5m2"}
+                   "fp8_e4m3", "fp8_e5m2", "all"}
 
 VALID_STEP_TYPES = {"multiple", "increment"}
 

@@ -5,6 +5,8 @@ from pathlib import Path
 from datetime import datetime
 from typing import List
 
+from sympy import false
+
 from config_loader import load_yaml_config, get_config_path
 from configuration import Configuration, VALID_COLLECTIVES
 from executor import run_executable
@@ -29,7 +31,9 @@ def run_tests(config: str, executable_dir: Path) -> None:
         shutil.copy(config_path, test_dir / "config.yaml")
         print(test_name)
         print(f"Raw config {raw_config}")
+        using_all_collectives = False
         if test_cfg.collectives[0] == "all":
+            using_all_collectives = True
             test_cfg.collectives = VALID_COLLECTIVES
         
         for collective in test_cfg.collectives:
