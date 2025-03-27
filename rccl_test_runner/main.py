@@ -19,10 +19,12 @@ def run_tests(config: str, executable_dir: Path) -> Path:
     output_root = Path("results") / config_path.stem
     output_root.mkdir(parents=True, exist_ok=True)
 
+    test_start_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+
     for test_name, test_dict in raw_config.items():
         test_cfg = Configuration.from_dict(test_dict)
 
-        test_dir = output_root / test_name / datetime.now().strftime("%Y%m%d_%H%M%S")
+        test_dir = output_root / test_name / test_start_time
         test_dir.mkdir(parents=True, exist_ok=True)
 
         
