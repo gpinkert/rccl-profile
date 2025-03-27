@@ -20,10 +20,15 @@ def build_command(executable: Path, config: Configuration, output_path: Path) ->
             raise KeyError(f"Invalid step type '{config.step_detail.type}'")
         step_value = config.step_detail.value
 
+    env_str: List[str] = []
+    for env_var in config.ENV_VARS:
+        env_str.append(f"-x {env_var.name}={env_var.value}")
+
     cmd_parts = [
         "mpirun -np 8 --mca pml ucx --mca btl ^openib -x NCCL_DEBUG=VERSION",
+        *env_str,
         f"{str(executable)}",
-        "-d", ",".join(config.datatype),
+        "-d", ",".join(config.datatypes),
         "-b", format_size(config.start_size),
         "-e", format_size(config.end_size),
         f"{step_flag}", f"{str(step_value) if step_value else ''}",
@@ -36,26 +41,20 @@ def build_command(executable: Path, config: Configuration, output_path: Path) ->
 
     return " ".join(cmd_parts)
 
-def prepare_env(env_vars: List) -> dict:
-    new_env = os.environ.copy()
-    for var in env_vars:
-        new_env[var.name] = str(var.value)
-    return new_env
-
 def run_executable(
         executable: Path,
         config: Configuration,
         output_path: Path
 ) -> None:
     cmd = build_command(executable, config, output_path)
-    env = prepare_env(config.ENV_VARS)
-    print(cmd)
+    env = os.environ.copy()
+
     env["OMPI_ALLOW_RUN_AS_ROOT"] = "1"
     env["OMPI_ALLOW_RUN_AS_ROOT_CONFIRM"] = "1"
 
     try:
         result = subprocess.run(cmd, env=env, shell=True)
-        result.check_returncode()  # Raises CalledProcessError if return code != 0
+        result.check_returncode()
     except subprocess.CalledProcessError as e:
         print(f"[WARNING] Command failed: {e.cmd}")
         print(f"[WARNING] Exit status: {e.returncode}")

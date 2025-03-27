@@ -2,9 +2,14 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Union, Optional
 
 VALID_COLLECTIVES = {
-    "all_gather", "all_reduce", "alltoall", "alltoallv", "scatter",
+    "all", "all_gather", "all_reduce", "alltoall", "alltoallv", "scatter",
     "broadcast", "gather", "reduce", "reduce_scatter", "sendrecv"
 }
+
+VALID_OPS = {"sum", "prod", "min", "max", "avg", "mulsum", "all"}
+VALID_DATATYPES = {"int8", "uint8", "int32", "uint32", "int64",
+                   "uint64", "half", "float", "double", "bloat16",
+                   "fp8_e4m3", "fp8_e5m2"}
 
 VALID_STEP_TYPES = {"multiple", "increment"}
 
@@ -30,7 +35,7 @@ class Configuration:
     iterations: int
     operation: List[str]
     step_detail: Optional[StepDetail]
-    datatype: List[str]
+    datatypes: List[str]
     ENV_VARS: List[EnvVar] = field(default_factory=list)
     gpus_per_thread: Optional[int] = 1
 
@@ -43,6 +48,9 @@ class Configuration:
             raise ValueError("start_size cannot be less than 0")
         if isinstance(self.end_size, int) and self.end_size < 0:
             raise ValueError("end_size cannot be less than 0")
+        for datatype in self.datatypes:
+            if datatype not in VALID_DATATYPES:
+                raise ValueError(f"DataType {datatype} not supported")
 
     @staticmethod
     def from_dict(d: Dict) -> 'Configuration':
@@ -62,7 +70,7 @@ class Configuration:
             iterations=d["iterations"],
             operation=d["operation"],
             step_detail=step_detail,
-            datatype=d["datatype"],
+            datatypes=d["datatypes"],
             ENV_VARS=env_vars,
             gpus_per_thread=d.get("gpus_per_thread", 1),
         )
