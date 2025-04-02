@@ -1,7 +1,7 @@
 all_nccl_gdr_off:
   collectives: [all]
   start_size: 1
-  end_size: 8g
+  end_size: 16g
   iterations: 2
   operation: [all]
   step_details:
@@ -16,7 +16,7 @@ all_nccl_gdr_off:
 all_nccl_gdr_on:
   collectives: [all]
   start_size: 1
-  end_size: 8g
+  end_size: 16g
   iterations: 2
   operation: [all]
   step_details:
