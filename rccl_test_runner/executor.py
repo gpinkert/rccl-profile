@@ -53,6 +53,7 @@ def run_executable(
     env["OMPI_ALLOW_RUN_AS_ROOT_CONFIRM"] = "1"
 
     try:
+        print(f"Running command '{cmd}'")
         result = subprocess.run(cmd, env=env, shell=True)
         result.check_returncode()
     except subprocess.CalledProcessError as e:
