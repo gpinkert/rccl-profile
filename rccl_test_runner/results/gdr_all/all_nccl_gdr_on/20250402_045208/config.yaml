@@ -8,7 +8,7 @@ all_nccl_gdr_on:
   - all
   datatypes:
   - all
-  end_size: 8g
+  end_size: 16g
   iterations: 2
   operation:
   - all
