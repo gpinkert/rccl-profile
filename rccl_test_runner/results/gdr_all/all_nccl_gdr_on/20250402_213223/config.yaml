@@ -1,0 +1,20 @@
+all_nccl_gdr_on:
+  ENV_VARS:
+  - id: NCCL_GDRCOPY_ENABLE
+    value: 1
+  - id: NCCL_GDRCOPY_FLUSH_ENABLE
+    value: 1
+  - id: HSA_NO_SCRATCH_RECLAIM
+    value: 1
+  collectives:
+  - all
+  datatypes:
+  - float
+  end_size: 16g
+  iterations: 2
+  operation:
+  - sum
+  start_size: 1
+  step_details:
+  - type: multiple
+    value: 2
