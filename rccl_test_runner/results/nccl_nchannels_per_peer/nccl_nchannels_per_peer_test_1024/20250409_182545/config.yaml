@@ -1,0 +1,26 @@
+nccl_nchannels_per_peer_test_1024:
+  ENV_VARS:
+  - id: NCCL_NCHANNELS_PER_PEER
+    value: 1024
+  - id: HSA_NO_SCRATCH_RECLAIM
+    value: 1
+  collectives:
+  - all_gather
+  - all_reduce
+  - alltoall
+  - scatter
+  - broadcast
+  - gather
+  - reduce
+  - reduce_scatter
+  - sendrecv
+  datatypes:
+  - all
+  end_size: 16g
+  iterations: 2
+  operation:
+  - sum
+  start_size: 1
+  step_details:
+  - type: multiple
+    value: 2

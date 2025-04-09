@@ -187,8 +187,10 @@ def main():
     if "type" not in df.columns:
         df["type"] = "unknown"
 
+    df["wrong"] = df["wrong"].replace("N/A", 0).astype(int)
     # Identify numeric columns for potential y-axis
     numeric_cols = df.select_dtypes(include=[float, int]).columns.tolist()
+    print("===========numeric columns: {}=================".format(numeric_cols))
     if not numeric_cols:
         st.error("No numeric columns found for plotting.")
         st.stop()
@@ -281,7 +283,7 @@ def main():
                 color="combo_label",
                 line_dash=line_dash_arg,
                 hover_data=["run_label", "redop", "type", "inPlace", "env_bundle"],
-                title=f"{col_name}: Timings vs. size (y={y_axis_col})"
+                title=f"{col_name}: {y_axis_col} vs. msg size"
             )
             fig.update_layout(
                 xaxis_title="Message Size",
