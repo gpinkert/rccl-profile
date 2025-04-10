@@ -51,8 +51,6 @@ def create_tables(root_dir:Path, output_path: Path):
     df = df[get_keys()]
     df = df[~df["wrong"].isin(["0", "N/A"])]
     df = df[df["type"].isin(get_dtypes())]
-    # print(df.head(10))    
-    # group entries by env value, collective, dtype
     df.set_index(['NCCL_NCHANNELS_PER_PEER', 'name', 'type'], inplace=True)
     df["size"] = df["size"].apply(human_readable_size)
     # print(df.head(50))
