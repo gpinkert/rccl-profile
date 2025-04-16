@@ -1,0 +1,18 @@
+nccl_max_ctas_56:
+  ENV_VARS:
+  - id: NCCL_MAX_CTAS
+    value: 56
+  - id: NCCL_MIN_CTAS
+    value: 0
+  collectives:
+  - all
+  datatypes:
+  - all
+  end_size: 16g
+  iterations: 2
+  operation:
+  - all
+  start_size: 1
+  step_details:
+  - type: multiple
+    value: 2

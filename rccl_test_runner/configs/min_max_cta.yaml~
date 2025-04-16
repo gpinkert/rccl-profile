@@ -1,0 +1,176 @@
+nccl_max_ctas_56:
+  collectives: [all]
+  start_size: 1
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  step_details:
+  - type: multiple
+    value: 2
+  datatypes: [all]
+  ENV_VARS:
+  - id: NCCL_MAX_CTAS
+    value: 56
+  - id: NCCL_MIN_CTAS
+    value: 0
+
+nccl_max_ctas_70:
+  collectives: [all]
+  start_size: 1
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  step_details:
+  - type: multiple
+    value: 2
+  datatypes: [all]
+  ENV_VARS:
+  - id: NCCL_MAX_CTAS
+    value: 70
+  - id: NCCL_MIN_CTAS
+    value: 0
+
+nccl_max_ctas_84:
+  collectives: [all]
+  start_size: 1
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  step_details:
+  - type: multiple
+    value: 2
+  datatypes: [all]
+  ENV_VARS:
+  - id: NCCL_MAX_CTAS
+    value: 84
+  - id: NCCL_MIN_CTAS
+    value: 0
+
+nccl_max_ctas_96:
+  collectives: [all]
+  start_size: 1
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  step_details:
+  - type: multiple
+    value: 2
+  datatypes: [all]
+  ENV_VARS:
+  - id: NCCL_MAX_CTAS
+    value: 96
+  - id: NCCL_MIN_CTAS
+    value: 0
+
+nccl_max_ctas_112:
+  collectives: [all]
+  start_size: 1
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  step_details:
+  - type: multiple
+    value: 2
+  datatypes: [all]
+  ENV_VARS:
+  - id: NCCL_MAX_CTAS
+    value: 112
+  - id: NCCL_MIN_CTAS
+    value: 0
+
+nccl_max_ctas_1122000:
+  collectives: [all]
+  start_size: 1
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  step_details:
+  - type: multiple
+    value: 2
+  datatypes: [all]
+  ENV_VARS:
+  - id: NCCL_MAX_CTAS
+    value: 1122000
+  - id: NCCL_MIN_CTAS
+    value: 0
+
+nccl_min_ctas_56:
+  collectives: [all]
+  start_size: 1
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  step_details:
+  - type: multiple
+    value: 2
+  datatypes: [all]
+  ENV_VARS:
+  - id: NCCL_MIN_CTAS
+    value: 56
+  - id: NCCL_MAX_CTAS
+    value: 0
+
+nccl_min_ctas_14:
+  collectives: [all]
+  start_size: 1
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  step_details:
+  - type: multiple
+    value: 2
+  datatypes: [all]
+  ENV_VARS:
+  - id: NCCL_MIN_CTAS
+    value: 14
+  - id: NCCL_MAX_CTAS
+    value: 0
+
+nccl_min_ctas_28:
+  collectives: [all]
+  start_size: 1
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  step_details:
+  - type: multiple
+    value: 2
+  datatypes: [all]
+  ENV_VARS:
+  - id: NCCL_MIN_CTAS
+    value: 28
+  - id: NCCL_MAX_CTAS
+    value: 0
+
+nccl_min_ctas_42:
+  collectives: [all]
+  start_size: 1
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  step_details:
+  - type: multiple
+    value: 2
+  datatypes: [all]
+  ENV_VARS:
+  - id: NCCL_MIN_CTAS
+    value: 42
+  - id: NCCL_MAX_CTAS
+    value: 0
+
+all_nccl_ctas_off:
+  collectives: [all]
+  start_size: 1
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  step_details:
+  - type: multiple
+    value: 2
+  datatypes: [all]
+  ENV_VARS:
+  - id: NCCL_MAX_CTAS
+    value: 0
+  - id: NCCL_MIN_CTAS
+    value: 0
+

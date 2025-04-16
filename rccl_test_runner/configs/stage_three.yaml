@@ -1,0 +1,1345 @@
+  nccl_min_nchannels_12:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_NCHANNELS
+      value: 12
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_min_nchannels_16:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_NCHANNELS
+      value: 16
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_min_nchannels_32:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_NCHANNELS
+      value: 32
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_nchannels_1:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_NCHANNELS
+      value: 1
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_nchannels_4:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_NCHANNELS
+      value: 4
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_nchannels_8:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_NCHANNELS
+      value: 8
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_nchannels_16:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_NCHANNELS
+      value: 16
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_nchannels_32:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_NCHANNELS
+      value: 32
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_nchannels_64:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_NCHANNELS
+      value: 64
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_nchannels_128:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_NCHANNELS
+      value: 128
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_nchannels_per_net_peer_1:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: 1
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_nchannels_per_net_peer_2:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: 2
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_nchannels_per_net_peer_4:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: 4
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_nchannels_per_net_peer_8:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: 8
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_nchannels_per_net_peer_16:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: 16
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_nchannels_per_net_peer_32:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: 32
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_nchannels_per_peer_1:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: 1
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_nchannels_per_peer_2:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: 2
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_nchannels_per_peer_4:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: 4
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_nchannels_per_peer_8:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: 8
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_nchannels_per_peer_16:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: 16
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_nchannels_per_peer_32:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: 32
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_min_p2p_nchannels_1:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: 1
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_min_p2p_nchannels_2:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: 2
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_min_p2p_nchannels_4:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: 4
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_min_p2p_nchannels_8:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: 8
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_min_p2p_nchannels_16:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: 16
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_p2p_nchannels_4:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: 4
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_p2p_nchannels_8:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: 8
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_p2p_nchannels_16:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: 16
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_p2p_nchannels_32:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: 32
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_ignore_cpu_affinity_default:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_ignore_cpu_affinity_1:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: 1
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_ctas_1:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_CTAS
+      value: 1
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_ctas_2:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_CTAS
+      value: 2
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_ctas_4:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_CTAS
+      value: 4
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_max_ctas_8:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MAX_CTAS
+      value: 8
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+  nccl_min_ctas_1:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_CTAS
+      value: 1
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+  nccl_min_ctas_2:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_CTAS
+      value: 2
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+  nccl_min_ctas_4:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_CTAS
+      value: 4
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+  nccl_min_ctas_8:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_CTAS
+      value: 8
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+  all_nccl_env_vars_off:
+    collectives:
+    - all
+    start_size: 1
+    end_size: 16g
+    iterations: 2
+    operation:
+    - all
+    step_details:
+    - type: multiple
+      value: 2
+    datatypes:
+    - all
+    ENV_VARS:
+    - id: NCCL_MIN_NCHANNELS
+      value: default
+    - id: NCCL_MAX_NCHANNELS
+      value: default
+    - id: NCCL_NCHANNELS_PER_NET_PEER
+      value: default
+    - id: NCCL_NCHANNELS_PER_PEER
+      value: default
+    - id: NCCL_MIN_P2P_NCHANNELS
+      value: default
+    - id: NCCL_MAX_P2P_NCHANNELS
+      value: default
+    - id: NCCL_IGNORE_CPU_AFFINITY
+      value: default
+    - id: NCCL_MAX_CTAS
+      value: default
+    - id: NCCL_MIN_CTAS
+      value: default
+
