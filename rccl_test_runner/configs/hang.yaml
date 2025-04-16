@@ -1,0 +1,29 @@
+nccl_max_nchannels_1:
+  ENV_VARS:
+  - id: NCCL_MAX_NCHANNELS
+    value: 1
+  - id: NCCL_MIN_NCHANNELS
+    value: default
+  - id: NCCL_NCHANNELS_PER_NET_PEER
+    value: default
+  - id: NCCL_NCHANNELS_PER_PEER
+    value: default
+  - id: NCCL_MIN_P2P_NCHANNELS
+    value: default
+  - id: NCCL_MAX_P2P_NCHANNELS
+    value: default
+  - id: NCCL_IGNORE_CPU_AFFINITY
+    value: default
+  - id: NCCL_MAX_CTAS
+    value: default
+  - id: NCCL_MIN_CTAS
+    value: default
+  collectives: [all]
+  datatypes: [all]
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  start_size: 1
+  step_details:
+  - type: multiple
+    value: 2

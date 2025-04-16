@@ -22,10 +22,11 @@ def build_command(executable: Path, config: Configuration, output_path: Path) ->
 
     env_str: List[str] = []
     for env_var in config.ENV_VARS:
-        env_str.append(f"-x {env_var.name}={env_var.value}")
+        if env_var.value != "default":
+            env_str.append(f"-x {env_var.name}={env_var.value}")
 
     cmd_parts = [
-        "mpirun -np 8 --mca pml ucx --mca btl ^openib -x NCCL_DEBUG=VERSION",
+        "mpirun -np 8 --mca pml ucx --mca btl ^openib -x NCCL_DEBUG=VERSION -x HSA_NO_SCRATCH_RECLAIM=1",
         *env_str,
         f"{str(executable)}",
         "-d", ",".join(config.datatypes),

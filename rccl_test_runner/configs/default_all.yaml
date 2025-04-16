@@ -1,0 +1,10 @@
+nccl_min_ctas_28:
+  collectives: [all]
+  start_size: 1
+  end_size: 16g
+  iterations: 2
+  operation: [all]
+  step_details:
+  - type: multiple
+    value: 2
+  datatypes: [all]
