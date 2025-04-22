@@ -20,26 +20,19 @@ def read_json_file_records(json_file: Path):
     """
     records = []
     try:
-        # Try to parse the entire file as JSON
         with json_file.open("r") as f:
             data = json.load(f)
-
         if isinstance(data, dict):
-            # Single JSON object
             records.append(data)
         elif isinstance(data, list):
-            # List of JSON objects
             records.extend(data)
         else:
-            # If it's neither a dict nor list, fallback
             raise ValueError("JSON top-level not an object or list.")
     except Exception:
-        # Fallback to line-by-line approach
         with json_file.open("r") as f:
             reader = jsonlines.Reader(f)
             for obj in reader:
                 records.append(obj)
-
     return records
 
 ########################################
@@ -48,8 +41,6 @@ def read_json_file_records(json_file: Path):
 def parse_run_folder(run_folder: Path) -> pd.DataFrame:
     config_path = run_folder / "config.yaml"
     env_dict = {}
-
-    # Parse config.yaml if present
     if config_path.exists():
         try:
             with config_path.open() as cf:
@@ -67,8 +58,6 @@ def parse_run_folder(run_folder: Path) -> pd.DataFrame:
     all_records = []
     for json_file in run_folder.glob("*_perf.json"):
         collective_name = json_file.stem.replace("_perf", "")
-
-        # Use our utility to read either JSON array or line-based
         try:
             file_records = read_json_file_records(json_file)
             for rec in file_records:
@@ -79,7 +68,6 @@ def parse_run_folder(run_folder: Path) -> pd.DataFrame:
 
     if not all_records:
         return pd.DataFrame()
-
     df = pd.DataFrame(all_records)
     df["env_dict"] = [env_dict] * len(df)
     df["run_label"] = run_folder.name
@@ -96,20 +84,16 @@ def load_runs(folder_paths):
             df_list.append(run_df)
     if not df_list:
         return pd.DataFrame()
-
     big_df = pd.concat(df_list, ignore_index=True)
     big_df = unify_env_vars(big_df)
     return big_df
 
 def unify_env_vars(df: pd.DataFrame) -> pd.DataFrame:
-    # Gather all env var names
     all_env_names = set()
     for envd in df["env_dict"]:
         all_env_names.update(envd.keys())
-
     sorted_envs = sorted(all_env_names)
     env_bundles = []
-
     for _, row in df.iterrows():
         row_dict = row["env_dict"]
         parts = []
@@ -120,7 +104,6 @@ def unify_env_vars(df: pd.DataFrame) -> pd.DataFrame:
             parts.append(f"{env_name}={val}")
         bundle = ", ".join(parts)
         env_bundles.append(bundle)
-
     df["env_bundle"] = env_bundles
     return df
 
@@ -129,15 +112,15 @@ def unify_env_vars(df: pd.DataFrame) -> pd.DataFrame:
 ########################################
 def main():
     st.title("RCCL Perf JSON Results Dashboard")
-
     st.write("""
     **Features**:
-    - Single entry per config.yaml in each run folder
-    - JSON data can be in an array with commas **or** line-based with one record per line
-    - Environment vars are unified into 'env_bundle' (with '0' → 'unset')
-    - If only 1 message size => bar chart; if multiple => line chart
-    - Slider to filter by message size
-    - Single Collective Best Explorer for either a single size or an average across multiple
+    - Single entry per config.yaml in each run folder.
+    - JSON data can be in an array with commas **or** line-based with one record per line.
+    - Environment vars are unified into 'env_bundle' (with '0' → 'unset').
+    - If only 1 message size => bar chart; if multiple => line chart.
+    - Slider to filter by message size.
+    - Single Collective Average Explorer (computing the average time for each grouping).
+    - **New:** For each message size bucket, the app finds—for every collective/reduction op/datatype/inPlace grouping—the env var configuration with the lowest average time and produces a formatted text summary for **reduce**, **reduce_scatter**, and **all_reduce**.
     """)
 
     parent_dir = st.sidebar.text_input("Parent results directory", "results")
@@ -146,7 +129,6 @@ def main():
         st.error(f"Invalid parent directory: {parent_dir}")
         st.stop()
 
-    # Find run folders
     possible_run_folders = []
     for p in parent_path.rglob("*"):
         if p.is_dir():
@@ -168,18 +150,18 @@ def main():
         st.warning("No data loaded from selected folders.")
         st.stop()
 
-    # Convert numeric columns if needed
     if "size" in df.columns:
         df["size"] = pd.to_numeric(df["size"], errors="coerce")
     else:
         st.warning("No 'size' column found; using 0 as a placeholder.")
         df["size"] = 0
 
-    # Clean up missing columns
+    # Convert the size from bytes to gigabytes.
+    df["size_gb"] = df["size"] / (1024 ** 3)
+
     if "redop" not in df.columns:
         df["redop"] = "no_reduction"
-    df["redop"] = df["redop"].astype(str).str.strip()
-    df["redop"] = df["redop"].replace({"": "no_reduction", "none": "no_reduction", " ": "no_reduction"})
+    df["redop"] = df["redop"].astype(str).str.strip().replace({"": "no_reduction", "none": "no_reduction", " ": "no_reduction"})
 
     if "inPlace" not in df.columns:
         df["inPlace"] = -1
@@ -187,32 +169,31 @@ def main():
     if "type" not in df.columns:
         df["type"] = "unknown"
 
-    # Identify numeric columns for potential y-axis
     numeric_cols = df.select_dtypes(include=[float, int]).columns.tolist()
     if not numeric_cols:
         st.error("No numeric columns found for plotting.")
         st.stop()
 
+    # For charts, allow user to choose any numeric metric.
     y_axis_col = st.sidebar.selectbox("Y-Axis metric (for charts)", numeric_cols, index=0)
 
-    # Slider for message size
-    min_size = float(df["size"].min())
-    max_size = float(df["size"].max())
+    # Use size in GB for the slider.
+    min_size = float(df["size_gb"].min())
+    max_size = float(df["size_gb"].max())
     if min_size == max_size:
-        st.sidebar.write(f"Only one message size found: {min_size}")
+        st.sidebar.write(f"Only one message size found: {min_size} GB")
         chosen_size_range = (min_size, max_size)
     else:
         range_span = max_size - min_size
-        step_value = max(1.0, range_span / 10.0)
+        step_value = max(0.1, range_span / 10.0)
         chosen_size_range = st.sidebar.slider(
-            "Message size range",
+            "Message size range (GB)",
             min_value=min_size,
             max_value=max_size,
             value=(min_size, max_size),
             step=step_value
         )
 
-    # Basic filters
     all_envs = sorted(df["env_bundle"].unique())
     all_ops = sorted(df["redop"].unique())
     all_inplaces = sorted(df["inPlace"].unique())
@@ -223,16 +204,16 @@ def main():
     chosen_inplaces = st.sidebar.multiselect("In-place?", all_inplaces, default=all_inplaces)
     chosen_types = st.sidebar.multiselect("Datatypes", all_types, default=all_types)
 
-    # Apply filters
     filtered = df[
         df["env_bundle"].isin(chosen_envs) &
         df["redop"].isin(chosen_ops) &
         df["inPlace"].isin(chosen_inplaces) &
         df["type"].isin(chosen_types)
         ]
+    # Filter based on the gigabyte size values.
     filtered = filtered[
-        (filtered["size"] >= chosen_size_range[0]) &
-        (filtered["size"] <= chosen_size_range[1])
+        (filtered["size_gb"] >= chosen_size_range[0]) &
+        (filtered["size_gb"] <= chosen_size_range[1])
         ]
 
     st.subheader("Filtered Data Preview (All Rows)")
@@ -242,7 +223,7 @@ def main():
         st.warning("No data after filtering.")
         return
 
-    # Plot per collective
+    # Generate charts per collective.
     these_collectives = sorted(filtered["collective"].unique())
     for col_name in these_collectives:
         sub = filtered[filtered["collective"] == col_name]
@@ -250,8 +231,7 @@ def main():
             continue
 
         st.markdown(f"## Collective: **{col_name}**")
-        unique_sizes = sub["size"].dropna().unique()
-
+        unique_sizes = sub["size_gb"].dropna().unique()
         if len(unique_sizes) == 1:
             st.write(f"Only one message size => bar chart, using {y_axis_col} on Y axis")
             fig = px.bar(
@@ -260,7 +240,7 @@ def main():
                 y=y_axis_col,
                 color="env_bundle",
                 barmode="group",
-                hover_data=["run_label", "type", "size"],
+                hover_data=["run_label", "type", "size_gb"],
                 title=f"{col_name}: Single-size bar chart ({y_axis_col})"
             )
             fig.update_layout(
@@ -268,15 +248,13 @@ def main():
                 yaxis_title=y_axis_col
             )
             st.plotly_chart(fig, use_container_width=True)
-
         else:
             st.write(f"Multiple message sizes => line chart, using {y_axis_col} on Y axis")
             sub["combo_label"] = sub["type"] + "_" + sub["redop"] + "_" + sub["env_bundle"]
             line_dash_arg = "inPlace" if len(sub["inPlace"].unique()) > 1 else None
-
             fig = px.line(
                 sub,
-                x="size",
+                x="size_gb",
                 y=y_axis_col,
                 color="combo_label",
                 line_dash=line_dash_arg,
@@ -284,14 +262,15 @@ def main():
                 title=f"{col_name}: Timings vs. size (y={y_axis_col})"
             )
             fig.update_layout(
-                xaxis_title="Message Size",
+                xaxis_title="Message Size (GB)",
                 yaxis_title=y_axis_col
             )
             st.plotly_chart(fig, use_container_width=True)
 
-    # Single Collective Best Explorer
-    st.header("Single Collective Best Explorer")
-
+    ########################################
+    # Single Collective Average Explorer
+    ########################################
+    st.header("Single Collective Average Explorer")
     if not these_collectives:
         st.warning("No collectives found in the current filters.")
         return
@@ -303,15 +282,14 @@ def main():
         return
 
     pick_mode = st.radio("Pick the mode", ["Single message size", "Average across message sizes"], index=0)
-    unique_sizes_for_col = sorted(sub_collective["size"].unique())
-
+    unique_sizes_for_col = sorted(sub_collective["size_gb"].unique())
     if pick_mode == "Single message size":
         if not unique_sizes_for_col:
             st.warning("No message sizes found for this collective.")
             return
-        chosen_size = st.selectbox("Pick a single message size", unique_sizes_for_col)
-        working_df = sub_collective[sub_collective["size"] == chosen_size]
-        note_str = f"- Collective = `{chosen_collective}`, Single Size = `{chosen_size}`"
+        chosen_size = st.selectbox("Pick a single message size (GB)", unique_sizes_for_col)
+        working_df = sub_collective[sub_collective["size_gb"] == chosen_size]
+        note_str = f"- Collective = `{chosen_collective}`, Single Size = `{chosen_size}` GB"
     else:
         working_df = sub_collective
         note_str = f"- Collective = `{chosen_collective}`, **All** message sizes in current filter"
@@ -320,40 +298,67 @@ def main():
         st.warning("No data for the chosen mode.")
         return
 
-    judge_metric = st.selectbox("Which metric to pick best environment?", [c for c in numeric_cols if c in working_df.columns])
-    direction = st.selectbox("Interpretation of the chosen metric:", ["Lower is better", "Higher is better"])
-    ascending = (direction == "Lower is better")
+    # Allow user to choose the timing metric to average.
+    judge_metric = st.selectbox("Which timing metric to average?", [c for c in numeric_cols if c in working_df.columns])
 
-    aggregator_choice = st.selectbox("Aggregator for duplicates or multiple runs:", ["mean", "median", "min", "max"])
-    aggregator_map = {
-        "mean": np.mean,
-        "median": np.median,
-        "min": np.min,
-        "max": np.max
-    }
-    agg_func = aggregator_map[aggregator_choice]
-
+    st.markdown("### Average time for each grouping (Operation, Datatype, InPlace, Env Bundle)")
     group_cols = ["redop", "type", "inPlace", "env_bundle"]
-    grouped = (working_df.groupby(group_cols)[judge_metric].agg(agg_func).reset_index())
-    grouped = grouped.rename(columns={judge_metric: "agg_value"})
-    grouped_sorted = grouped.sort_values(by="agg_value", ascending=ascending)
+    grouped_avg = working_df.groupby(group_cols)[judge_metric].mean().reset_index().rename(columns={judge_metric: "average_time"})
+    st.dataframe(grouped_avg)
 
-    best_rows = grouped_sorted.groupby(["redop", "type", "inPlace"], as_index=False).first()
+    ########################################
+    # Best Env Var Configurations by Message Size Bucket (Lowest Average Time)
+    ########################################
+    st.header("Best Env Var Configuration by Message Size Bucket (Lowest Average Time)")
+    buckets = {
+        "Below 0.5gb": filtered[filtered["size_gb"] < 0.5],
+        "0.5gb-1gb": filtered[(filtered["size_gb"] >= 0.5) & (filtered["size_gb"] < 1)],
+        "1gb-2gb": filtered[(filtered["size_gb"] >= 1) & (filtered["size_gb"] < 2)],
+        "2gb-16gb": filtered[(filtered["size_gb"] >= 2) & (filtered["size_gb"] <= 16)]
+    }
 
-    st.markdown("### Best environment combos for each (Operation, Datatype, inPlace)")
-    st.markdown(note_str)
-    st.markdown(f"- Judging by `{judge_metric}` with aggregator = `{aggregator_choice}`")
-    st.markdown(f"- **{'Lower' if ascending else 'Higher'}** is better")
+    bucket_summaries = {}  # dictionary to hold each bucket's best results.
+    for bucket_label, bucket_df in buckets.items():
+        st.subheader(bucket_label)
+        if bucket_df.empty:
+            st.write("No data in this bucket.")
+            bucket_summaries[bucket_label] = pd.DataFrame()
+            continue
 
-    st.dataframe(best_rows)
+        group_cols_bucket = ["collective", "redop", "type", "inPlace", "env_bundle"]
+        grouped_bucket_avg = bucket_df.groupby(group_cols_bucket)[judge_metric].mean().reset_index().rename(columns={judge_metric: "average_time"})
+        # For each combination, select the env_bundle with the lowest average_time.
+        best_bucket = grouped_bucket_avg.sort_values(by="average_time").groupby(
+            ["collective", "redop", "type", "inPlace"], as_index=False
+        ).first()
+        st.dataframe(best_bucket)
+        bucket_summaries[bucket_label] = best_bucket
 
-    global_best = grouped_sorted.iloc[0]
-    st.subheader("Overall Best Single Combination for that selection")
-    st.write(f"- Operation (redop): `{global_best['redop']}`")
-    st.write(f"- Datatype: `{global_best['type']}`")
-    st.write(f"- inPlace: `{global_best['inPlace']}`")
-    st.write(f"- Env Bundle: `{global_best['env_bundle']}`")
-    st.write(f"- Aggregated `{judge_metric}`: **{global_best['agg_value']}**")
+    ########################################
+    # Create a Formatted Copy/Paste Text Summary for Selected Collectives
+    ########################################
+    st.header("Bucket Summary (Formatted for Copy/Paste)")
+    summary_lines = []
+    summary_lines.append("Summary for Collectives: reduce, reduce_scatter, and all_reduce")
+    summary_lines.append("=" * 50)
+    for bucket_label, best_bucket in bucket_summaries.items():
+        summary_lines.append(f"\nBucket: {bucket_label}")
+        summary_lines.append("-" * 40)
+        if best_bucket.empty:
+            summary_lines.append("  No data in this bucket.\n")
+        else:
+            # Only include rows for the specified collectives.
+            for _, row in best_bucket.iterrows():
+                if row["collective"].strip().lower() in {"reduce", "reduce_scatter", "all_reduce"}:
+                    summary_lines.append(f"Collective: {row['collective']}")
+                    summary_lines.append(f"  Redop      : {row['redop']}")
+                    summary_lines.append(f"  Type       : {row['type']}")
+                    summary_lines.append(f"  InPlace    : {row['inPlace']}")
+                    summary_lines.append(f"  Best Env   : {row['env_bundle']}")
+                    summary_lines.append(f"  Avg. Time  : {row['average_time']:.3f}")
+                    summary_lines.append("")  # extra blank line between groups
+    summary_text = "\n".join(summary_lines)
+    st.text_area("Copy and Paste the Following Bucket Summary", summary_text, height=400)
 
 if __name__ == "__main__":
     st.set_page_config(
