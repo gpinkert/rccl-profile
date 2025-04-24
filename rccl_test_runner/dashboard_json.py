@@ -5,136 +5,166 @@ from pathlib import Path
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 import plotly.express as px
+
 from models import Base
 from ingest import ingest_zip
 
-# --------------------------------------
-# Database configuration
-# --------------------------------------
-# Use environment variable or default to MySQL on host network
-# Assumes a MySQL container running on localhost:3306 with credentials dashuser/dashpass
-default_db = os.getenv('DB_URL', 'mysql+pymysql://dashuser:dashpass@127.0.0.1/perf_dashboard')
-engine = create_engine(default_db, echo=False)
+# DB config
+default_db = os.getenv(
+    'DB_URL',
+    'mysql+pymysql://dashuser:dashpass@127.0.0.1/perf_dashboard'
+)
+engine = create_engine(default_db, echo=True)
 Session = sessionmaker(bind=engine)
-# Create tables if they don't exist
 Base.metadata.create_all(engine)
 
-# --------------------------------------
-# Streamlit App Configuration
-# --------------------------------------
-st.set_page_config(page_title="RCCL & Coverage Dashboard", layout="wide")
-st.title("RCCL & Coverage Dashboard")
+st.set_page_config(page_title='RCCL & Coverage Dashboard', layout='wide')
+st.title('RCCL & Coverage Dashboard')
 
-# --------------------------------------
-# Ingestion Section
-# --------------------------------------
-st.header("Upload .zip Runs")
-uploaded = st.file_uploader("Upload .zip files", type='zip', accept_multiple_files=True)
-if uploaded:
-    session = Session()
-    for f in uploaded:
-        ingest_zip(f, session)
-    session.close()
+debug = st.sidebar.checkbox('Show debug info', value=False)
 
-with st.expander("Ingest from server filesystem"):
-    dirpath = st.text_input("Directory path", "/")
-    if os.path.isdir(dirpath):
-        items = [f for f in os.listdir(dirpath) if f.endswith('.zip')]
-        to_ingest = st.multiselect("Select .zip files", items)
-        if st.button("Ingest selected"):
-            session = Session()
-            for fn in to_ingest:
-                ingest_zip(Path(dirpath) / fn, session)
-            session.close()
+# Ingest UI
+st.header('Upload .zip Runs')
+ufs = st.file_uploader('Upload .zip files', type='zip', accept_multiple_files=True)
+if ufs:
+    s = Session()
+    for f in ufs:
+        ingest_zip(f, s)
+    s.close()
+with st.expander('Ingest from server filesystem'):
+    dp = st.text_input('Directory path', '/')
+    if os.path.isdir(dp):
+        zips = [f for f in os.listdir(dp) if f.endswith('.zip')]
+        sel = st.multiselect('Select .zip files', zips)
+        if st.button('Ingest selected'):
+            s = Session()
+            for z in sel:
+                ingest_zip(Path(dp)/z, s)
+            s.close()
     else:
-        st.error("Invalid path provided")
+        st.error('Invalid path')
 
-# --------------------------------------
-# Analysis Tabs
-# --------------------------------------
-tab1, tab2 = st.tabs(["Benchmarking", "Coverage"])
+tab1, tab2 = st.tabs(['Benchmarking', 'Coverage'])
 
 # Benchmarking Explorer
 with tab1:
-    st.header("Benchmarking Explorer")
-    session = Session()
-    rows = session.execute(text(
-        "SELECT id, run_label FROM runs WHERE measurement_type='benchmark' ORDER BY timestamp"
+    st.header('Benchmarking Explorer')
+    s = Session()
+    runs = s.execute(text(
+        "SELECT id, run_label FROM runs "
+        "WHERE measurement_type='benchmark' ORDER BY timestamp"
     )).fetchall()
-    session.close()
+    s.close()
+    if not runs:
+        st.info('No benchmark runs available.')
+        st.stop()
+    labels = [r.run_label for r in runs]
+    chosen = st.multiselect('Select runs', labels, default=labels)
+    if not chosen:
+        st.stop()
+    ids = [r.id for r in runs if r.run_label in chosen]
+    q = ','.join(str(i) for i in ids)
 
-    if not rows:
-        st.info("No benchmark runs available.")
-    else:
-        labels = [r.run_label for r in rows]
-        chosen = st.multiselect("Select runs to view", labels, default=labels)
-        if chosen:
-            ids = [r.id for r in rows if r.run_label in chosen]
-            placeholder = ','.join(['?'] * len(ids))
-            df = pd.read_sql(
-                f"SELECT * FROM benchmark_records WHERE run_id IN ({placeholder})", engine, params=ids
-            )
-            metrics_df = df['metrics'].apply(pd.Series)
-            df = pd.concat([df.drop(columns=['metrics']), metrics_df], axis=1)
-            df['size_gb'] = df['size_gb'].astype(float)
+    with engine.connect() as conn:
+        data = conn.execute(text(
+            f"SELECT * FROM benchmark_records WHERE run_id IN ({q})"
+        )).mappings().all()
+    df = pd.DataFrame(data)
+    if df.empty:
+        st.warning('No data for selected runs.')
+        st.stop()
 
-            # Sidebar filters
-            st.sidebar.subheader("Filters")
-            y_cols = [c for c in df.columns if pd.api.types.is_numeric_dtype(df[c]) and c not in ['id','run_id']]
-            y_axis = st.sidebar.selectbox("Y-axis metric", y_cols)
-            envs = st.sidebar.multiselect("Env bundles", df['env_bundle'].unique(), default=list(df['env_bundle'].unique()))
-            ops = st.sidebar.multiselect("Reduction ops", df['redop'].unique(), default=list(df['redop'].unique()))
-            types = st.sidebar.multiselect("Datatypes", df['datatype'].unique(), default=list(df['datatype'].unique()))
-            inplace_vals = st.sidebar.multiselect("In-place flags", df['in_place'].unique(), default=list(df['in_place'].unique()))
-            size_min, size_max = df['size_gb'].min(), df['size_gb'].max()
-            size_range = st.sidebar.slider("Message size (GB)", size_min, size_max, (size_min, size_max))
+    # merge run labels
+    with engine.connect() as conn:
+        runs_df = pd.DataFrame(
+            conn.execute(text(
+                f"SELECT id AS run_id, run_label FROM runs WHERE id IN ({q})"
+            )).mappings().all()
+        )
+    df = df.merge(runs_df, on='run_id', how='left')
 
-            fdf = df[
-                df['env_bundle'].isin(envs) &
-                df['redop'].isin(ops) &
-                df['datatype'].isin(types) &
-                df['in_place'].isin(inplace_vals) &
-                df['size_gb'].between(*size_range)
-                ]
-            st.subheader("Filtered Benchmark Data")
-            st.dataframe(fdf)
+    if debug:
+        st.subheader('🐛 DEBUG: Raw data')
+        st.write(df.head())
 
-            for collective in fdf['collective'].unique():
-                sub = fdf[fdf['collective'] == collective]
-                st.markdown(f"### Collective: **{collective}**")
-                if sub['size_gb'].nunique() == 1:
-                    fig = px.bar(sub, x='redop', y=y_axis, color='env_bundle', barmode='group')
-                else:
-                    sub = sub.copy()
-                    sub['combo'] = sub['datatype'] + '_' + sub['redop'] + '_' + sub['env_bundle']
-                    fig = px.line(sub, x='size_gb', y=y_axis, color='combo', markers=True)
-                    fig.update_layout(xaxis_title='Size (GB)', yaxis_title=y_axis)
-                st.plotly_chart(fig, use_container_width=True)
+    df['size_gb'] = df['size'] / 1024**3
+
+    # Filters
+    st.sidebar.header('Filters')
+    y_axis = st.sidebar.selectbox('Y-axis metric', [c for c in ['time','bus_bw','alg_bw'] if c in df.columns])
+    envs = st.sidebar.multiselect('Env bundles', df['env_bundle'].unique(), default=df['env_bundle'].unique())
+    ops = st.sidebar.multiselect('Reduction ops', df['redop'].unique(), default=df['redop'].unique())
+    types = st.sidebar.multiselect('Datatypes', df['datatype'].unique(), default=df['datatype'].unique())
+    inplace = st.sidebar.multiselect('In-place', df['in_place'].unique(), default=df['in_place'].unique())
+    mn, mx = float(df['size_gb'].min()), float(df['size_gb'].max())
+    size_range = st.sidebar.slider('Size GB', mn, mx, (mn, mx))
+
+    fdf = df[
+        df['env_bundle'].isin(envs) &
+        df['redop'].isin(ops) &
+        df['datatype'].isin(types) &
+        df['in_place'].isin(inplace) &
+        df['size_gb'].between(size_range[0], size_range[1])
+        ]
+
+    st.subheader('Filtered Benchmark Data')
+    st.dataframe(fdf)
+
+    for coll in fdf['collective'].unique():
+        sub = fdf[fdf['collective']==coll].copy()
+        st.markdown(f"### Collective: **{coll}**")
+        sub['combo'] = (
+                sub['datatype'].astype(str) + '_' +
+                sub['redop'].astype(str) + '_' +
+                sub['env_bundle'].astype(str) + '_' +
+                sub['in_place'].astype(str)
+        )
+        if sub['size_gb'].nunique() == 1:
+            fig = px.bar(sub, x='combo', y=y_axis)
+        else:
+            fig = px.line(sub, x='size_gb', y=y_axis, color='combo', markers=True)
+            fig.update_layout(xaxis_title='Size (GB)', yaxis_title=y_axis)
+        st.plotly_chart(fig, use_container_width=True)
 
 # Coverage Explorer
 with tab2:
-    st.header("Coverage Over Time")
-    session = Session()
-    rows = session.execute(text(
+    st.header('Coverage Over Time')
+    s = Session()
+    runs_cov = s.execute(text(
         "SELECT id, run_label FROM runs WHERE measurement_type='coverage' ORDER BY timestamp"
     )).fetchall()
-    session.close()
+    s.close()
+    if not runs_cov:
+        st.info('No coverage runs.')
+        st.stop()
+    labels_cov = [r.run_label for r in runs_cov]
+    chosen_cov = st.multiselect('Coverage runs', labels_cov, default=labels_cov)
+    if not chosen_cov:
+        st.stop()
+    ids_cov = [r.id for r in runs_cov if r.run_label in chosen_cov]
+    q2 = ','.join(str(i) for i in ids_cov)
 
-    if not rows:
-        st.info("No coverage runs available.")
-    else:
-        labels = [r.run_label for r in rows]
-        chosen = st.multiselect("Select coverage runs", labels, default=labels)
-        if chosen:
-            ids = [r.id for r in rows if r.run_label in chosen]
-            placeholder = ','.join(['?'] * len(ids))
-            dfc = pd.read_sql(
-                f"SELECT * FROM coverage_records WHERE run_id IN ({placeholder})", engine, params=ids
-            )
-            dfc['run_label'] = pd.Categorical(
-                dfc['run_id'].map({r.id: r.run_label for r in rows}),
-                categories=chosen, ordered=True
-            )
-            metrics = ['function_cov', 'line_cov', 'region_cov', 'branch_cov']
-            fig = px.line(dfc, x='run_label', y=metrics, markers=True)
-            st.plotly_chart(fig, use_container_width=True)
+    with engine.connect() as conn:
+        cov_data = conn.execute(text(
+            f"SELECT * FROM coverage_records WHERE run_id IN ({q2})"
+        )).mappings().all()
+    dfc = pd.DataFrame(cov_data)
+    if dfc.empty:
+        st.warning('No coverage data.')
+        st.stop()
+
+    # env_bundle already in table
+    dfc['run_label'] = pd.Categorical(
+        dfc['run_id'].map({r.id: r.run_label for r in runs_cov}),
+        categories=chosen_cov, ordered=True
+    )
+    metrics = ['function_cov','line_cov','region_cov','branch_cov']
+    figc = px.line(
+        dfc,
+        x='run_label',
+        y=metrics,
+        color='env_bundle',
+        markers=True
+    )
+    figc.update_layout(xaxis_title='Run', yaxis_title='Coverage (%)')
+    st.plotly_chart(figc, use_container_width=True)
