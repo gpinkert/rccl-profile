@@ -9,10 +9,25 @@ Base = declarative_base()
 
 class Run(Base):
     __tablename__ = "runs"
-    id               = Column(Integer, primary_key=True)
+
+    id               = Column(Integer, primary_key=True, autoincrement=True)
     run_label        = Column(String(255), nullable=False, unique=True)
     measurement_type = Column(String(50),  nullable=False)
     timestamp        = Column(DateTime, default=datetime.datetime.utcnow)
+
+    # ─── Stored total coverage fields ──────────────────────────────────────────
+    total_function_count   = Column(Integer)
+    total_function_covered = Column(Integer)
+    total_function_percent = Column(Float)
+    total_line_count       = Column(Integer)
+    total_line_covered     = Column(Integer)
+    total_line_percent     = Column(Float)
+    total_region_count     = Column(Integer)
+    total_region_covered   = Column(Integer)
+    total_region_percent   = Column(Float)
+    total_branch_count     = Column(Integer)
+    total_branch_covered   = Column(Integer)
+    total_branch_percent   = Column(Float)
 
     benchmarks = relationship(
         "BenchmarkRecord",
@@ -22,7 +37,8 @@ class Run(Base):
     coverages = relationship(
         "CoverageRecord",
         back_populates="run",
-        cascade="all, delete-orphan"
+        cascade="all, delete-orphan",
+        foreign_keys="[CoverageRecord.run_id]"
     )
     env_vars = relationship(
         "EnvVar",
@@ -32,7 +48,8 @@ class Run(Base):
 
 class BenchmarkRecord(Base):
     __tablename__ = "benchmark_records"
-    id             = Column(Integer,    primary_key=True)
+
+    id             = Column(Integer,    primary_key=True, autoincrement=True)
     run_id         = Column(Integer,    ForeignKey("runs.id"), nullable=False)
     collective     = Column(String(100), nullable=False)
     nodes          = Column(Integer)
@@ -53,20 +70,39 @@ class BenchmarkRecord(Base):
 
 class CoverageRecord(Base):
     __tablename__ = "coverage_records"
-    id            = Column(Integer,    primary_key=True)
-    run_id        = Column(Integer,    ForeignKey("runs.id"), nullable=False)
-    file          = Column(String(500))
-    function_cov  = Column(Float)
-    line_cov      = Column(Float)
-    region_cov    = Column(Float)
-    branch_cov    = Column(Float)
-    env_bundle    = Column(String(255))
 
-    run = relationship("Run", back_populates="coverages")
+    id               = Column(Integer, primary_key=True, autoincrement=True)
+    run_id           = Column(Integer, ForeignKey("runs.id"), nullable=False)
+    file             = Column(String(500))
+
+    function_count   = Column(Integer)
+    function_covered = Column(Integer)
+    function_cov     = Column(Float)
+
+    line_count       = Column(Integer)
+    line_covered     = Column(Integer)
+    line_cov         = Column(Float)
+
+    region_count     = Column(Integer)
+    region_covered   = Column(Integer)
+    region_cov       = Column(Float)
+
+    branch_count     = Column(Integer)
+    branch_covered   = Column(Integer)
+    branch_cov       = Column(Float)
+
+    env_bundle       = Column(String(255))
+
+    run = relationship(
+        "Run",
+        back_populates="coverages",
+        foreign_keys=[run_id]
+    )
 
 class EnvVar(Base):
     __tablename__ = "env_vars"
-    id     = Column(Integer, primary_key=True)
+
+    id     = Column(Integer, primary_key=True, autoincrement=True)
     run_id = Column(Integer, ForeignKey("runs.id"), nullable=False)
     name   = Column(String(255), nullable=False)
     value  = Column(String(255), nullable=True)
