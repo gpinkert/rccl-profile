@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: perf_dashboard
+      MYSQL_USER:     dashuser
+      MYSQL_PASSWORD: dashpass
+      MYSQL_ROOT_PASSWORD: rootpass
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  app:
+    build: .
+    restart: always
+    ports:
+      - "8501:8501"
+    environment:
+      DB_URL: "mysql+pymysql://dashuser:dashpass@db/perf_dashboard"
+    depends_on:
+      - db
+
+volumes:
+  db_data:

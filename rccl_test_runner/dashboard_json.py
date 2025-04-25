@@ -27,61 +27,157 @@ st.title('RCCL & Coverage Dashboard')
 debug = st.sidebar.checkbox('Show debug info', value=False)
 
 # --------------------------------------
-# Ingest .zip Runs
+# Unified ingest uploader
 # --------------------------------------
-st.header('Upload .zip Runs')
-ufs = st.file_uploader('Upload .zip files', type='zip', accept_multiple_files=True)
-if ufs:
-    sess = Session()
-    for f in ufs:
-        ingest_zip(f, sess)
-    sess.close()
+st.header('Upload Runs (.zip for benchmarks, .json for coverage)')
+uploads = st.file_uploader(
+    'Select .zip and/or .json files',
+    type=['zip', 'json'],
+    accept_multiple_files=True
+)
+coverage_label = None
+if uploads:
+    zip_files = [f for f in uploads if f.name.endswith('.zip')]
+    json_files = [f for f in uploads if f.name.endswith('.json')]
+    if json_files:
+        default_label = Path(json_files[0].name).stem
+        coverage_label = st.text_input(
+            'Label for coverage run(s)', value=default_label
+        )
+    if st.button('Ingest Selected Runs'):
+        sess = Session()
+        # ingest benchmarks
+        for z in zip_files:
+            ingest_zip(z, sess)
+        # ingest coverage
+        if json_files:
+            if not coverage_label or not coverage_label.strip():
+                st.error('Please enter a label for coverage run(s)')
+            else:
+                for j in json_files:
+                    ingest_coverage_json(j, coverage_label.strip(), sess)
+        sess.close()
+        st.success('Ingested selected runs')
 
-with st.expander('Ingest from server filesystem'):
-    dp = st.text_input('Directory path', '/')
-    if os.path.isdir(dp):
-        zips = [f for f in os.listdir(dp) if f.endswith('.zip')]
-        sel = st.multiselect('Select .zip files', zips)
-        if st.button('Ingest selected'):
-            sess = Session()
-            for z in sel:
-                ingest_zip(Path(dp) / z, sess)
-            sess.close()
-    else:
-        st.error('Invalid path')
-
+# --------------------------------------
 # Tabs
+# --------------------------------------
 tab1, tab2 = st.tabs(['Benchmarking', 'Coverage'])
 
-# Benchmarking placeholder
+# Benchmarking Explorer placeholder
 with tab1:
     st.header('Benchmarking Explorer')
-    st.info('… your existing benchmarking UI …')
+
+    sess = Session()
+    runs = sess.execute(text(
+        "SELECT id, run_label FROM runs "
+        "WHERE measurement_type='benchmark' ORDER BY timestamp"
+    )).fetchall()
+    sess.close()
+
+    if not runs:
+        st.info('No benchmark runs available.')
+        st.stop()
+
+    labels = [r.run_label for r in runs]
+    chosen = st.multiselect('Select runs', labels, default=labels)
+    if not chosen:
+        st.stop()
+
+    run_ids = [r.id for r in runs if r.run_label in chosen]
+    q = ','.join(str(i) for i in run_ids)
+
+    with engine.connect() as conn:
+        data = conn.execute(text(
+            f"SELECT * FROM benchmark_records WHERE run_id IN ({q})"
+        )).mappings().all()
+    df = pd.DataFrame(data)
+    if df.empty:
+        st.warning('No data for selected runs.')
+        st.stop()
+
+    # merge run labels
+    with engine.connect() as conn:
+        runs_df = pd.DataFrame(
+            conn.execute(text(
+                f"SELECT id AS run_id, run_label FROM runs WHERE id IN ({q})"
+            )).mappings().all()
+        )
+    df = df.merge(runs_df, on='run_id', how='left')
+
+    if debug:
+        st.subheader('🐛 DEBUG: Raw data')
+        st.write(df.head())
+
+    df['size_gb'] = df['size'] / 1024**3
+
+    # Sidebar filters
+    st.sidebar.header('Filters')
+    y_axis = st.sidebar.selectbox(
+        'Y-axis metric',
+        [c for c in ['time','bus_bw','alg_bw'] if c in df.columns]
+    )
+    envs = st.sidebar.multiselect(
+        'Env bundles',
+        df['env_bundle'].unique(),
+        default=df['env_bundle'].unique()
+    )
+    ops = st.sidebar.multiselect(
+        'Reduction ops',
+        df['redop'].unique(),
+        default=df['redop'].unique()
+    )
+    types = st.sidebar.multiselect(
+        'Datatypes',
+        df['datatype'].unique(),
+        default=df['datatype'].unique()
+    )
+    inplace = st.sidebar.multiselect(
+        'In-place',
+        df['in_place'].unique(),
+        default=df['in_place'].unique()
+    )
+    mn, mx = float(df['size_gb'].min()), float(df['size_gb'].max())
+    size_range = st.sidebar.slider('Size GB', mn, mx, (mn, mx))
+
+    fdf = df[
+        df['env_bundle'].isin(envs) &
+        df['redop'].isin(ops) &
+        df['datatype'].isin(types) &
+        df['in_place'].isin(inplace) &
+        df['size_gb'].between(size_range[0], size_range[1])
+        ]
+
+    st.subheader('Filtered Benchmark Data')
+    st.dataframe(fdf)
+
+    for coll in fdf['collective'].unique():
+        sub = fdf[fdf['collective'] == coll].copy()
+        st.markdown(f"### Collective: **{coll}**")
+        sub['combo'] = (
+                sub['datatype'].astype(str) + '_' +
+                sub['redop'].astype(str) + '_' +
+                sub['env_bundle'].astype(str) + '_' +
+                sub['in_place'].astype(str)
+        )
+        if sub['size_gb'].nunique() == 1:
+            fig = px.bar(sub, x='combo', y=y_axis)
+        else:
+            fig = px.line(
+                sub,
+                x='size_gb',
+                y=y_axis,
+                color='combo',
+                markers=True
+            )
+            fig.update_layout(xaxis_title='Size (GB)', yaxis_title=y_axis)
+        st.plotly_chart(fig, use_container_width=True)
 
 # Coverage Explorer
 with tab2:
-    st.header('Coverage Ingestion & Comparison')
+    st.header('Coverage Comparison')
 
-    # 1) Upload & label new coverage JSON(s)
-    uploaded = st.file_uploader(
-        'Upload one or more llvm-cov JSON files', type='json', accept_multiple_files=True
-    )
-    if uploaded:
-        default_label = Path(uploaded[0].name).stem
-        label = st.text_input('Label for this coverage run', value=default_label)
-        if st.button('Ingest Coverage Run'):
-            if not label.strip():
-                st.error('You must enter a non-empty label.')
-            else:
-                sess = Session()
-                for f in uploaded:
-                    ingest_coverage_json(f, label.strip(), sess)
-                sess.close()
-                st.success(f'Ingested coverage run "{label.strip()}"')
-
-    st.markdown('---')
-
-    # 2) Select existing coverage runs
+    # Fetch existing coverage runs
     sess = Session()
     runs_cov = sess.execute(text(
         "SELECT id, run_label FROM runs WHERE measurement_type='coverage' ORDER BY timestamp"
@@ -89,38 +185,38 @@ with tab2:
     sess.close()
 
     if not runs_cov:
-        st.info('No coverage runs ingested yet.')
+        st.info('No coverage runs available. Ingest some using the uploader above.')
         st.stop()
 
     labels_cov = [r.run_label for r in runs_cov]
-    chosen_cov = st.multiselect('Select coverage runs to compare', labels_cov, default=labels_cov[:2])
+    chosen_cov = st.multiselect(
+        'Select coverage runs to compare', labels_cov, default=labels_cov[:2]
+    )
     if not chosen_cov:
         st.stop()
 
     run_ids = [r.id for r in runs_cov if r.run_label in chosen_cov]
+    ids_str = ','.join(map(str, run_ids))
 
-    # 3) Fetch per-file coverage records
-    ids_str = ','.join(str(i) for i in run_ids)
+    # Load per-file records
     with engine.connect() as conn:
         cov_rows = conn.execute(text(
             f"SELECT * FROM coverage_records WHERE run_id IN ({ids_str})"
         )).mappings().all()
-
     dfc = pd.DataFrame(cov_rows)
     if dfc.empty:
-        st.warning('No coverage data for those runs.')
+        st.warning('No coverage data for selected runs.')
         st.stop()
-
     dfc['run_label'] = dfc['run_id'].map({r.id: r.run_label for r in runs_cov})
 
     if debug:
         st.subheader('🐛 DEBUG: Raw coverage_records')
         st.dataframe(dfc)
 
-    # 4) Per-file Coverage Details
+    # Per-file details
     st.subheader('Per-File Coverage Details')
     per_file = dfc[dfc['file'] != '__summary__'].copy()
-    def fmt(pct, cov, tot): return f"{pct:.1f}% ({cov}/{tot})" if tot else ''
+    fmt = lambda pct, cov, tot: f"{pct:.1f}% ({cov}/{tot})" if tot else ''
     per_file['Function'] = per_file.apply(lambda r: fmt(r.function_cov, r.function_covered, r.function_count), axis=1)
     per_file['Line']     = per_file.apply(lambda r: fmt(r.line_cov,     r.line_covered,     r.line_count),     axis=1)
     per_file['Region']   = per_file.apply(lambda r: fmt(r.region_cov,   r.region_covered,   r.region_count),   axis=1)
@@ -130,7 +226,7 @@ with tab2:
         .rename(columns={'run_label':'Run','file':'File'})
     )
 
-    # 5) Run-level summary from stored totals
+    # Run-level summary from stored totals
     st.subheader('Run-Level Coverage Summary (JSON totals)')
     sql = f"""
         SELECT run_label,
@@ -145,16 +241,28 @@ with tab2:
     with engine.connect() as conn:
         rows = conn.execute(text(sql)).mappings().all()
     df_runs = pd.DataFrame(rows)
-    # reorder columns
-    df_runs = df_runs[['run_label', 'total_function_percent', 'total_line_percent', 'total_region_percent', 'total_branch_percent']]
+
+    # reorder & rename columns
+    df_runs = df_runs[['run_label', 'total_function_percent', 'total_line_percent',
+                       'total_region_percent', 'total_branch_percent']]
     df_runs.columns = ['Run', 'Function', 'Line', 'Region', 'Branch']
     st.dataframe(df_runs)
 
-    # 6) Bar charts for stored totals
+    # Bar charts with distinct colors and no legend
     st.subheader('Coverage Comparison Bar Charts')
+    color_seq = px.colors.qualitative.Plotly
     for col in ['Function','Line','Region','Branch']:
-        fig = px.bar(df_runs, x='Run', y=col, title=f'{col}', labels={col:f'{col} (%)'})
+        fig = px.bar(
+            df_runs,
+            x='Run',
+            y=col,
+            color='Run',
+            color_discrete_sequence=color_seq,
+            title=f'{col}',
+            labels={col:f'{col} (%)'}
+        )
+        fig.update_layout(showlegend=False)
         fig.update_yaxes(range=[0,100])
-        if len(chosen_cov)==1:
+        if len(chosen_cov) == 1:
             fig.update_traces(width=0.3)
         st.plotly_chart(fig, use_container_width=True)
